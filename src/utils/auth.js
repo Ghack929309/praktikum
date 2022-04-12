@@ -1,5 +1,3 @@
-import jwt from 'jsonwebtoken';
-
 export const BASE_URL = 'https://register.nomoreparties.co';
 
 export const register = (email, password) => {
@@ -19,8 +17,9 @@ export const register = (email, password) => {
   .then((res) => {
     return res;
   })
-  .catch((err) => console.log(err));
+  .catch((err) => console.error(err));
 };
+
 export const login = (email, password) => {
   return fetch(`${BASE_URL}/signin`, {
     method: 'POST',
@@ -31,12 +30,11 @@ export const login = (email, password) => {
     body: JSON.stringify({email, password})
   })
   .then((response) => {
-    console.log(response.json())
     return response.json()
   })
   .then((data) => {
-    console.log('this is the data'+data)
-    localStorage.setItem('jwt', data.jwt)
+    const {token}=data
+    localStorage.setItem('jwt', token)
     localStorage.setItem('email', email);
     return data;
   })

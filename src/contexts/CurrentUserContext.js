@@ -17,11 +17,12 @@ export function CurrentProvider ({children}){
 
     const [isLoggedIn, setIsLoggedIn] = React.useState(false);
     const [email, setEmail] = React.useState('');
-
+    const [password, setPassword] = React.useState('');
     const history = useHistory();
 
     React.useEffect(() => {
         api.getUserInfo().then((userData) => {
+            console.log(userData)
             setCurrentUser(userData);
         });
     }, []);
@@ -70,6 +71,7 @@ export function CurrentProvider ({children}){
 
     React.useEffect(() => {
         api.getCardList().then((cardData) => {
+            console.log(cardData)
             setCards(cardData);
         });
     }, []);
@@ -130,7 +132,7 @@ export function CurrentProvider ({children}){
                             email,
                             password
                         }
-                        onLogin(userData);
+                       history.push('/signin')
                     } else {
                         // incorrect data
                         setTooltipStatus('fail');
@@ -145,7 +147,6 @@ export function CurrentProvider ({children}){
     }
     function onLogin({ email, password }){
         auth.login(email, password).then((res) => {
-            console.log(res)
             if (res.token){
                 setIsLoggedIn(true);
                 setEmail(email);
@@ -156,14 +157,16 @@ export function CurrentProvider ({children}){
     }
     function onSignOut(){
         setIsLoggedIn(false);
+        localStorage.removeItem('jwt')
+        localStorage.removeItem('email')
         history.push('/signin');
     }
     return(
-        <CurrentUserContext.Provider value={{email,onSignOut,cards,handleEditProfileClick,handleAddPlaceClick
+        <CurrentUserContext.Provider value={{email,setEmail,onSignOut,cards,handleEditProfileClick,handleAddPlaceClick
             ,handleEditAvatarClick,handleCardClick,handleCardLike,handleCardDelete,isLoggedIn
             ,onRegister,isEditProfilePopupOpen,handleUpdateUser,isAddPlacePopupOpen,handleAddPlaceSubmit,
             onLogin,isEditAvatarPopupOpen,handleUpdateAvatar,closeAllPopups,selectedCard,
-            isInfoToolTipOpen,tooltipStatus}}>
+            isInfoToolTipOpen,tooltipStatus,password,setPassword}}>
             {children}
         </CurrentUserContext.Provider>
     )

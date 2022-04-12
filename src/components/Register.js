@@ -1,9 +1,10 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import { Link } from 'react-router-dom';
+import {CurrentUserContext} from "../contexts/CurrentUserContext";
 
 function Register ({ onRegister }){
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
+  const {email,password,setEmail,setPassword}=useContext(CurrentUserContext)
+
 
   function handleSubmit(e){
     e.preventDefault();
@@ -19,14 +20,14 @@ function Register ({ onRegister }){
         <div className="auth-form__wrapper">
           <h3 className="auth-form__title">Sign up</h3>
           <label className="auth-form__input">
-            <input type="text" name="email" id="email"
+            <input type="text" name="email" id="email" value={email || ''}
               className="auth-form__textfield" placeholder="Email"
-              onChange={e => setEmail(e.target.value)} required  />
+              onChange={e => setEmail(e.target.value )} required  />
           </label>
           <label className="auth-form__input">
-            <input type="password" name="password" id="password"
+            <input type="password" name="password" value={password || ''} id="password"
               className="auth-form__textfield" placeholder="Password"
-              onChange={e => setPassword(e.target.value)} required  />
+              onChange={e => setPassword(e.target.value )} required  />
           </label>
         </div>
         <div className="auth-form__wrapper">

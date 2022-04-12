@@ -1,19 +1,19 @@
 import React from 'react';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
-function Card({ card, onCardClick, onCardLike, onCardDelete }) {
+function Card({ card, handleCardClick, handleCardLike, handleDeleteClick }) {
   const cardStyle = { backgroundImage: `url(${card.link})` };
 
   function handleClick() {
-    onCardClick(card);
+    handleCardClick(card);
   }
 
   function handleLikeClick() {
-    onCardLike(card);
+    handleCardLike(card);
   }
 
-  function handleDeleteClick() {
-    onCardDelete(card);
+  function handleCardDeleteClick() {
+    handleDeleteClick(card);
   }
 
   const currentUser = React.useContext(CurrentUserContext);
@@ -30,13 +30,13 @@ function Card({ card, onCardClick, onCardLike, onCardDelete }) {
     <li className="places__item card">
       <div className="card__image" style={cardStyle} onClick={handleClick}>
       </div>
-      <button type="button" className={cardDeleteButtonClassName} onClick={handleDeleteClick}></button>
+      <button type="button" className={cardDeleteButtonClassName} onClick={handleCardDeleteClick}/>
       <div className="card__description">
         <h2 className="card__title">
           {card.name}
         </h2>
         <div className="card__likes">
-          <button type="button" className={cardLikeButtonClassName} onClick={handleLikeClick}></button>
+          <button type="button" className={cardLikeButtonClassName} onClick={handleLikeClick}/>
           <p className="card__like-count">{card.likes.length}</p>
         </div>
       </div>
