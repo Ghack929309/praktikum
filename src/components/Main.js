@@ -4,15 +4,8 @@ import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import api from "../utils/api";
 
 function Main() {
-    const { cards, handleEditProfileClick, handleAddPlaceClick, handleEditAvatarClick, handleCardClick, handleDeleteClick }=useContext(CurrentUserContext)
+    const { cards, handleEditProfileClick, handleAddPlaceClick, handleEditAvatarClick, handleCardClick }=useContext(CurrentUserContext)
   const imageStyle = { backgroundImage: `url(${CurrentUserContext.avatar})` };
-
-
-
-
-
-
-
   return (
     <main className="content">
       <section className="profile page__section">
@@ -30,10 +23,6 @@ function Main() {
             <Card
               key={i}
               card={card}
-              onCardClick={handleCardClick}
-              onCardLike={handleCardClick}
-              onCardDelete={handleDeleteClick}
-
             />
           ))}
         </ul>

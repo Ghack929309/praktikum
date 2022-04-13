@@ -16,7 +16,7 @@ import ProtectedRoute from './ProtectedRoute';
 function App() {
  const {email,onSignOut,cards,handleEditProfileClick,handleAddPlaceClick
    ,handleEditAvatarClick,handleCardClick,handleCardLike,handleCardDelete,isLoggedIn
-   ,onRegister,isEditProfilePopupOpen,handleUpdateUser,isAddPlacePopupOpen,handleAddPlaceSubmit,
+   ,onRegister,isEditProfilePopupOpen,isAddPlacePopupOpen,handleAddPlaceSubmit,
    onLogin,isEditAvatarPopupOpen,handleUpdateAvatar,closeAllPopups,selectedCard,
    isInfoToolTipOpen,tooltipStatus}=React.useContext(CurrentUserContext)
 
@@ -47,7 +47,7 @@ function App() {
             © 2021 Around
           </p>
         </footer>
-        <EditProfilePopup isOpen={isEditProfilePopupOpen} onUpdateUser={handleUpdateUser} onClose={closeAllPopups} />
+        <EditProfilePopup isOpen={isEditProfilePopupOpen}  onClose={closeAllPopups} />
         <AddPlacePopup isOpen={isAddPlacePopupOpen} onAddPlace={handleAddPlaceSubmit} onClose={closeAllPopups} />
         <PopupWithForm title="Are you sure?" name="remove-card" buttonText="Yes" />
         <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onUpdateAvatar={handleUpdateAvatar} onClose={closeAllPopups} />

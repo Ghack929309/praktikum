@@ -47,9 +47,7 @@ export function CurrentProvider ({children}){
         setSelectedCard(undefined);
     }
 
-    function handleCardClick(card) {
-        setSelectedCard(card);
-    }
+
 
     function handleUpdateUser(userUpdate) {
         api.setUserInfo(userUpdate).then((newUserData) => {
@@ -69,7 +67,7 @@ export function CurrentProvider ({children}){
 
 
 
-    React.useEffect(() => {
+    React.useEffect( () => {
         api.getCardList().then((cardData) => {
             setCards(cardData);
         });
@@ -93,20 +91,7 @@ export function CurrentProvider ({children}){
         }
     }, []);
 
-    // function handleCardLike(card) {
-    //     const isLiked = card.likes.some(i => i._id === currentUser._id);
-    //     api.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
-    //         const newCards = cards.map((c) => c._id === card._id ? newCard : c);
-    //         setCards(newCards);
-    //     });
-    // }
 
-    function handleCardDelete(card) {
-        api.removeCard(card._id).then(() => {
-            const newCards = cards.filter((c) => c._id !== card._id);
-            setCards(newCards);
-        });
-    }
 
     function handleAddPlaceSubmit(newCard) {
         api.addCard(newCard).then((newCardFull) => {
@@ -127,10 +112,6 @@ export function CurrentProvider ({children}){
                         setTooltipStatus('success');
                         setIsInfoToolTipOpen(true);
                         // log user in
-                        const userData = {
-                            email,
-                            password
-                        }
                        history.push('/signin')
                     } else {
                         // incorrect data
@@ -162,7 +143,7 @@ export function CurrentProvider ({children}){
     }
     return(
         <CurrentUserContext.Provider value={{setCards,email,setEmail,currentUser,onSignOut,cards,handleEditProfileClick,handleAddPlaceClick
-            ,handleEditAvatarClick,handleCardClick,handleCardDelete,isLoggedIn
+            ,handleEditAvatarClick,setSelectedCard,isLoggedIn
             ,onRegister,isEditProfilePopupOpen,handleUpdateUser,isAddPlacePopupOpen,handleAddPlaceSubmit,
             onLogin,isEditAvatarPopupOpen,handleUpdateAvatar,closeAllPopups,selectedCard,
             isInfoToolTipOpen,tooltipStatus,password,setPassword}}>

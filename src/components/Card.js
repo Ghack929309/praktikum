@@ -3,37 +3,39 @@ import api from "../utils/api";
 import {CurrentUserContext} from "../contexts/CurrentUserContext";
 
 
-function Card({handleCardClick,handleDeleteClick,card }) {
+function Card({card }) {
   const cardStyle = { backgroundImage: `url(${card.link})` };
-  const {currentUser,cards,setCards}=useContext(CurrentUserContext)
-    function handleCardDeleteClick() {
-        handleDeleteClick(card);
+
+  const {currentUser, cards,setSelectedCard, setCards}=useContext(CurrentUserContext)
+    function handleCardClick(card) {
+        setSelectedCard(card);
     }
-    function handleClick() {
-        handleCardClick(card);
+    function handleCardDelete(card) {
+        api.removeCard(card._id).then(() => {
+            const newCards = cards.filter((c) => c._id !== card._id);
+            setCards(newCards);
+        });
     }
     function handleCardLike(card) {
-        console.log(currentUser._id)
         const isLiked = card.likes?.some(i => i._id === currentUser._id);
         api.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
             const newCards = cards.map((c) => c._id === card._id ? newCard : c);
-            setCards(prev=>[...prev,newCards]);
+            setCards(newCards);
         });
     }
 
     const isLiked = card.likes?.some(i => i._id === currentUser._id);
     const cardLikeButtonClassName = `card__like-button ${isLiked && 'card__like-button_is-active'}`;
-    console.log(card)
-    let isOwn =true //card.owner._id === currentUser._id;
-    console.log(isOwn)
+
+    let isOwn = card.owner._id === currentUser._id;
     const cardDeleteButtonClassName = (
         `card__delete-button ${isOwn ? 'card__delete-button_visible' : 'card__delete-button_hidden'}`
     );
   return (
     <li className="places__item card">
-      <div className="card__image" style={cardStyle} onClick={handleClick}>
+      <div className="card__image" style={cardStyle} onClick={()=>handleCardClick(card)}>
       </div>
-      <button type="button" className={cardDeleteButtonClassName} onClick={handleCardDeleteClick}/>
+      <button type="button" className={cardDeleteButtonClassName} onClick={()=>handleCardDelete(card)}/>
       <div className="card__description">
         <h2 className="card__title">
           {card.name}
