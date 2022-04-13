@@ -10,7 +10,7 @@ export function CurrentProvider ({children}){
     const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
     const [isInfoToolTipOpen, setIsInfoToolTipOpen] = React.useState(false);
     const [tooltipStatus, setTooltipStatus] = React.useState('');
-
+    const [cards, setCards] = React.useState([]);
     const [selectedCard, setSelectedCard] = React.useState();
 
     const [currentUser, setCurrentUser] = React.useState('');
@@ -22,7 +22,7 @@ export function CurrentProvider ({children}){
 
     React.useEffect(() => {
         api.getUserInfo().then((userData) => {
-            console.log(userData)
+
             setCurrentUser(userData);
         });
     }, []);
@@ -67,11 +67,10 @@ export function CurrentProvider ({children}){
         });
     }
 
-    const [cards, setCards] = React.useState([]);
+
 
     React.useEffect(() => {
         api.getCardList().then((cardData) => {
-            console.log(cardData)
             setCards(cardData);
         });
     }, []);
@@ -94,13 +93,13 @@ export function CurrentProvider ({children}){
         }
     }, []);
 
-    function handleCardLike(card) {
-        const isLiked = card.likes.some(i => i._id === currentUser._id);
-        api.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
-            const newCards = cards.map((c) => c._id === card._id ? newCard : c);
-            setCards(newCards);
-        });
-    }
+    // function handleCardLike(card) {
+    //     const isLiked = card.likes.some(i => i._id === currentUser._id);
+    //     api.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
+    //         const newCards = cards.map((c) => c._id === card._id ? newCard : c);
+    //         setCards(newCards);
+    //     });
+    // }
 
     function handleCardDelete(card) {
         api.removeCard(card._id).then(() => {
@@ -162,8 +161,8 @@ export function CurrentProvider ({children}){
         history.push('/signin');
     }
     return(
-        <CurrentUserContext.Provider value={{email,setEmail,onSignOut,cards,handleEditProfileClick,handleAddPlaceClick
-            ,handleEditAvatarClick,handleCardClick,handleCardLike,handleCardDelete,isLoggedIn
+        <CurrentUserContext.Provider value={{setCards,email,setEmail,currentUser,onSignOut,cards,handleEditProfileClick,handleAddPlaceClick
+            ,handleEditAvatarClick,handleCardClick,handleCardDelete,isLoggedIn
             ,onRegister,isEditProfilePopupOpen,handleUpdateUser,isAddPlacePopupOpen,handleAddPlaceSubmit,
             onLogin,isEditAvatarPopupOpen,handleUpdateAvatar,closeAllPopups,selectedCard,
             isInfoToolTipOpen,tooltipStatus,password,setPassword}}>

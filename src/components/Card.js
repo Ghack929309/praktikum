@@ -1,31 +1,34 @@
-import React from 'react';
-import { CurrentUserContext } from '../contexts/CurrentUserContext';
+import React, {useContext} from 'react';
+import api from "../utils/api";
+import {CurrentUserContext} from "../contexts/CurrentUserContext";
 
-function Card({ card, handleCardClick, handleCardLike, handleDeleteClick }) {
+
+function Card({handleCardClick,handleDeleteClick,card }) {
   const cardStyle = { backgroundImage: `url(${card.link})` };
+  const {currentUser,cards,setCards}=useContext(CurrentUserContext)
+    function handleCardDeleteClick() {
+        handleDeleteClick(card);
+    }
+    function handleClick() {
+        handleCardClick(card);
+    }
+    function handleCardLike(card) {
+        console.log(currentUser._id)
+        const isLiked = card.likes?.some(i => i._id === currentUser._id);
+        api.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
+            const newCards = cards.map((c) => c._id === card._id ? newCard : c);
+            setCards(prev=>[...prev,newCards]);
+        });
+    }
 
-  function handleClick() {
-    handleCardClick(card);
-  }
-
-  function handleLikeClick() {
-    handleCardLike(card);
-  }
-
-  function handleCardDeleteClick() {
-    handleDeleteClick(card);
-  }
-
-  const currentUser = React.useContext(CurrentUserContext);
-
-  const isLiked = card.likes.some(i => i._id === currentUser._id);
-  const cardLikeButtonClassName = `card__like-button ${isLiked && 'card__like-button_is-active'}`;
-
-  const isOwn = card.owner._id === currentUser._id;
-  const cardDeleteButtonClassName = (
-    `card__delete-button ${isOwn ? 'card__delete-button_visible' : 'card__delete-button_hidden'}`
-  );
-
+    const isLiked = card.likes?.some(i => i._id === currentUser._id);
+    const cardLikeButtonClassName = `card__like-button ${isLiked && 'card__like-button_is-active'}`;
+    console.log(card)
+    let isOwn =true //card.owner._id === currentUser._id;
+    console.log(isOwn)
+    const cardDeleteButtonClassName = (
+        `card__delete-button ${isOwn ? 'card__delete-button_visible' : 'card__delete-button_hidden'}`
+    );
   return (
     <li className="places__item card">
       <div className="card__image" style={cardStyle} onClick={handleClick}>
@@ -36,8 +39,8 @@ function Card({ card, handleCardClick, handleCardLike, handleDeleteClick }) {
           {card.name}
         </h2>
         <div className="card__likes">
-          <button type="button" className={cardLikeButtonClassName} onClick={handleLikeClick}/>
-          <p className="card__like-count">{card.likes.length}</p>
+          <button type="button" className={cardLikeButtonClassName} onClick={()=>handleCardLike(card)}/>
+          <p className="card__like-count">{card?.likes?.length}</p>
         </div>
       </div>
     </li>

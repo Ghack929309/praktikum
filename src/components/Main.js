@@ -1,10 +1,17 @@
 import React, {useContext} from 'react';
 import Card from './Card';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
+import api from "../utils/api";
 
 function Main() {
-    const { cards, handleEditProfileClick, handleAddPlaceClick, handleEditAvatarClick, handleCardClick, handleCardLike, handleDeleteClick }=useContext(CurrentUserContext)
+    const { cards, handleEditProfileClick, handleAddPlaceClick, handleEditAvatarClick, handleCardClick, handleDeleteClick }=useContext(CurrentUserContext)
   const imageStyle = { backgroundImage: `url(${CurrentUserContext.avatar})` };
+
+
+
+
+
+
 
   return (
     <main className="content">
@@ -24,8 +31,9 @@ function Main() {
               key={i}
               card={card}
               onCardClick={handleCardClick}
-              onCardLike={handleCardLike}
+              onCardLike={handleCardClick}
               onCardDelete={handleDeleteClick}
+
             />
           ))}
         </ul>
